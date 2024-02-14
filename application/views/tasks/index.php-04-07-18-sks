@@ -1,0 +1,948 @@
+<?php $this->load->view('layout/header', array('title' => $this->lang->line('Tasks'), 'forms' => TRUE, 'tables' => TRUE, 'icheck' => TRUE, 'magicsuggest' => TRUE)) ?>
+
+<style>
+.pop-dialog{
+	left:200px;
+}
+.samefor-div
+{
+	float:left;
+	width: 9%;
+}
+
+.dep-div
+{
+	
+}	
+.cat-div
+{
+	
+}
+.task-code-div
+{
+	
+}
+.emp-div
+{
+width:53%;	
+}
+.table th:nth-child(2) {    max-width: 70px !important;}
+.table td:nth-child(2) {    max-width:70px !important;}
+.table th:nth-child(4) {    max-width: 250px !important;}
+.table td:nth-child(4) {    max-width:250px !important;}
+.table th:nth-child(7) {    max-width: 30px !important;}
+.table td:nth-child(7) {    max-width:30px !important;}
+.table th:nth-child(8) {    max-width: 30px !important;}
+.table td:nth-child(8) {   max-width: 30px !important;}
+.table th:nth-child(9) {    min-width:130px !important; max-width: 130px !important;}
+.table td:nth-child(9) {    min-width:130px !important; max-width: 130px !important;}
+.table th:nth-child(10) {    min-width: 90px !important;}
+.table td:nth-child(10) {    min-width: 90px !important;}
+.table th:nth-child(11) {    min-width: 90px !important;}
+.table td:nth-child(11) {    min-width: 90px !important;}
+.table th:nth-child(12) {    min-width: 90px !important;}
+.table td:nth-child(12) {    min-width: 90px !important; text-align:center;}		
+
+</style>
+<?php  global $selemplodepartment; ?>
+ 
+	<?php  $username= $this->session->current->userdata('full_name') ?>
+						 
+
+
+<script>
+    $('document').ready(function () {
+		$('.complete').hide();
+        $('#reAssign').click(function () {
+            var that = $(this);
+            var values = new Array();
+            $.each($("input[name='checkHead[]']:checked"), function () {
+                values.push($(this).val());
+            });
+
+            if (values.length > 0) {
+//                console.log(JSON.stringify(values));
+//                that.attr('href', url);
+                return true;
+            } else {
+                alert("Please select at least one item. ");
+                return false;
+            }
+        });
+		
+		$('#Assigncode').click(function () {
+            var that = $(this);
+            var values = new Array();
+            $.each($("input[name='checkHead[]']:checked"), function () {
+                values.push($(this).val());
+            });
+
+            if (values.length > 0) {
+//                console.log(JSON.stringify(values));
+//                that.attr('href', url);
+                return true;
+            } else {
+                alert("Please select at least one item. ");
+                return false;
+            }
+        });
+
+        $('#modal_window').on('shown.bs.modal', function (e) {
+
+            var values = new Array();
+            $.each($("input[name='checkHead[]']:checked"), function () {
+                values.push($(this).val());
+            });
+            var url = $('#reAssign').attr('href');
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: url,
+                data: 'task_ids=' + JSON.stringify(values),
+                success: function (data) {
+                    $('#modal_window').html(data);
+                }
+            });
+        });
+		
+		$('#modal_windoww').on('shown.bs.modal', function (e) {
+			//alert('ggrg');
+            var valuess = new Array();
+            $.each($("input[name='checkHead[]']:checked"), function () {
+                valuess.push($(this).val());
+            });
+            var url = $('#Assigncode').attr('href');
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                url: url,
+                data: 'task_idss=' + JSON.stringify(valuess),
+                success: function (data) {
+                    $('#modal_windoww').html(data);
+                }
+            });
+        });
+
+// $('.mySelectorself').change( function(e) {
+// var gbb = $(this).val(); 
+ // });
+		
+		
+        //$(".knob").knob();
+        current_table = $('.data_table').dataTable({
+        <?php  if (isset($is_selfservice)) { ?>
+	
+          
+			//current_table = $('.data_table').dataTable({
+         "oSearch": {"sSearch": ""},
+         
+		
+		   
+		<?php }  else { ?>
+		
+			current_table = $('.data_table').dataTable({
+				 $('input[type="search"]').val('').keyup();
+             "columnDefs": [{
+                    "targets": [0, 2, 10],
+                    "orderable": false
+					
+                }]  
+	<?php } ?>
+				 
+        });
+	
+
+		  
+        $('.pop-btn').hover(function () {
+            var pop = $(this).attr('data-pop');
+            $(pop).show();
+        }, function () {
+            var pop = $(this).attr('data-pop');
+            $(pop).fadeOut();
+        });
+<?php if (isset($is_selfservice)) { ?>
+            var ms = $('#employee').magicSuggest({
+                placeholder: 'Filter By Employee',
+                allowFreeEntries: false,
+                data: 'schedule/find_employee',
+                maxSelection: 1
+            });
+			
+    <?php if (isset($employee)) { ?>
+                ms.setSelection([{name: '<?= $employee['name'] ?>', Department_name:'<?= $employee['department_name'] ?>', id:<?= $employee['employee_id'] ?>}]);
+    <?php } ?>
+            $(ms).on('selectionchange', function (e, m) {
+                $('#employee_id').val(this.getValue());
+                $('#filterByEmployee').submit();
+            });
+<?php } ?>
+
+
+
+
+	
+	$('#mySelector').change( function(e) { 
+		var letter = $(this).val();
+		window.location.href="<?php echo base_url();?>tasks/index/all/"+letter;
+	});
+ 
+ 	
+ 
+ 
+ 
+		$('.mySelector3').change( function(e) {
+			
+   var letter = $(this).val();
+ 
+ current_table.fnFilter( $(this).val() , 4); 	 
+ });
+$('.mySelector21').change( function(e) {
+			
+   var letter = $(this).val();
+ ;
+ current_table.fnFilter( $(this).val() , 4); 	 
+ 
+ 
+ });
+
+
+ 
+   $('#checkbox1').click(function() {
+        if($(this).is(':checked'))
+		{
+            //alert('checked');
+		 current_table.fnFilter( 'R' , 7);
+		}
+		 
+        else
+		{
+            //alert('unchecked');
+				 current_table.fnFilter( '' , 7);
+		}
+
+    });	
+	
+		$('#displayCompleted').click(function() {
+        if($(this).is(':checked'))
+		{
+            //alert('checked');
+			$('.complete').show();
+			
+		 current_table.fnFilter( $(this).val() , 2);
+		}
+		 
+        else
+		{
+                
+				$('.complete').hide(); 
+				 current_table.fnFilter('', 2);
+		}
+    });
+	
+	
+
+
+ 
+	$('#mySelector2').change( function(e) { 
+   var letter = $(this).val();
+     if (letter === 'null') {
+         $ ('tr').show ();
+     }
+     else {
+         $("table tr td:nth-child(2)").each(
+		   function(){
+			   if($(this).html() != letter){
+				   $(this).parent().hide();
+			   }
+			   else{
+				   $(this).parent().show();
+			   }
+		   });
+     }             
+ });
+	$('.mySelector4').change( function(e) {
+			
+   var ddddd = $(this).val();
+   
+ 
+	
+  current_table.fnFilter( $(this).val() , 8); 	 
+ });
+ 
+ $('.mySelectorself').change( function(e) {
+			
+ 
+
+  current_table.fnFilter( $(this).val() , 8);
+
+ 
+	 $('input[type="search"]').val('').keyup();
+
+ 
+ });
+ 
+ $('.mySelector5').change( function(e) {
+			
+   var ddddd = $(this).val();
+   
+    //alert(ddddd);
+	
+  current_table.fnFilter( $(this).val() , 8); 	 
+ });
+ 
+ 
+ 
+ 
+ $('#task_status').change( function(e) {
+			
+   var ddddd = $(this).val();
+   
+   // alert(ddddd);
+	
+  current_table.fnFilter( $(this).val() , 12); 	 
+ });
+ 
+ 
+
+ 
+ 
+ 
+
+
+    });
+	
+	
+	
+	
+	
+	
+</script>
+<script>
+$(document).ready(function() {
+        var country = $('#mySelector21').val();
+      
+     // alert(country);
+	  
+	  current_table.fnFilter(country , 4); 	
+	  
+} );
+} );
+
+ 
+</script>
+
+
+
+<script>
+
+function get()
+{
+	
+	
+   var k=ducument.getElementById("abc");
+   k.style.display="block";
+	
+	
+}
+
+
+
+
+</script>
+<?php  $emname =$_GET['xy'];?>
+
+
+<br>
+<?php   $de =$_GET['de']; ?>
+ 
+<p id="gb"><?php echo $emname ;?></p>
+
+
+<style>
+#gb {
+ display: none;
+}
+.hover_text {
+    position: absolute;
+    background: #000;
+    color: #fff;
+    font-size: 15px;
+    width: 787px;
+    padding: 13px 10px;
+    text-align: center;
+    border-radius: 20px;
+    display: none;
+    left: 95%;
+    top: 17px;
+    z-index: 99;
+}
+.on_hover span img {
+    width: 15px;
+    margin-left: 3px;
+}
+.on_hover:hover> .hover_text{ display:block;}
+</style>
+<script>
+
+  
+ $(document).ready(function() {
+var newwww	= $( "#gb" ).html()
+	
+	//alert(newwww);
+	current_table.fnFilter( newwww , 8); 
+	
+	
+});
+		
+		
+	
+  
+</script>
+<?php 
+			
+				foreach($empdataaa as $emplyee){
+					
+					 // echo '<pre>';
+					  // print_r($empdataaa);
+					//print_r($emplyee['name']);
+					// echo '</pre>';
+					
+				}
+			
+				
+				?>
+<div id="wrapper">
+    <?php $this->load->view('layout/menu', array('active_menu' => $active_menu)) ?>
+    <div id="page-wrapper" class="gray-bg">
+        <?php $this->load->view('layout/page_header') ?>
+
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-1" style="padding-right:5px;">
+                <h2 class="on_hover"><?= $this->lang->line('Tasks') ?><span><img src="images/if_Help.png" width="13%"></span><span class="hover_text">Register pending/on going task here. If employee finished the Task or if it is 100% - employee should delete it.</span></h2>
+                <ol class="breadcrumb">
+				
+				
+				
+                     <li>
+                        <a href="dashboard"><?= $this->lang->line('Home') ?></a>
+						<?php  global $selemplodepartment;
+						//print_r($depatmentdata);
+						 $selemplodepartment = $depatmentdata[0]['department_name'];	?>
+                    </li>
+                    <li>
+                        <?= $this->lang->line('List') ?>
+                    </li>
+                </ol>
+            </div>
+			
+		<div class="task-code-div samefor-div">
+                <div class="form-group" style="padding-top: 30px;">
+				 <?php //echo "<pre>";
+						//print_r($deparment);
+						?>
+                    <select id="task_status" name="task_status"  style="height: 35px;width: 95%;">
+                                                <option value="">Select Status</option>
+                                                <option value="unassigned">Unassigned</option>
+                                                <option value="assigned">Assigned</option>
+                                                <option value="completed">Completed</option>
+                                                <option value="regular">Regular</option>                                                
+                    </select>
+					
+                </div>
+            </div>
+			
+			<div class="dep-div samefor-div">
+                <div class="form-group" style="padding-top: 30px;">
+				  <?php if ($this->user_actions->is_selfservice()) { ?>
+
+                    
+					<select name="mySelector21" class="mySelector21" style="height: 35px;width: 95%;">
+					<option value="">SELECT DEPARTMENT</option>
+						   <?php foreach ($deparment as $categorye) { ?>
+						   
+                                <option <?php if($categorye['department_name'] == $selemplodepartment){ ?>selected="selected"<?php } ?>  value="<?= $categorye['department_name']  ?>" disabled="true"><?= $categorye['department_name'] ?></option>
+					<?php }  ?>
+                    </select>
+					
+				  <?php }  else {?>
+					 <select name="mySelector3" class="mySelector3" style="height: 35px;width: 95%;">
+						<option value="">SELECT DEPARTMENT</option>
+						  <?php foreach($deparment as $cattegrt)
+						{ ?>
+						<option value="<?= $cattegrt['department_name']; ?>"<?php if($cattegrt['department_name'] == $catte){ ?>selected="selected"<?php } ?> ><?= $cattegrt['department_name']; ?></option>
+				  <?php }  } ?>
+                    </select>
+					
+                </div>
+            
+			</div>
+		<div class="cat-div samefor-div">
+                <div class="form-group" style="padding-top: 30px;">
+                    <select name="mySelector" id="mySelector" style="height: 35px;width: 95%;">
+						<option value="">SELECT CATEGORY</option>
+						<?php foreach($category as $cattegrt)
+						{ ?>
+						<option value="<?= $cattegrt['task_category_id']; ?>"<?php if($cattegrt['task_category_id'] == $catte){ ?>selected="selected"<?php } ?> ><?= $cattegrt['task_category_name']; ?></option>
+						<?php } ?>
+                    </select>
+                </div>
+            </div>
+			
+			<div class="task-code-div samefor-div">
+                <div class="form-group" style="padding-top: 30px;">
+                    <select name="mySelector2" id="mySelector2" style="height: 35px;width: 95%;">
+						<option value="null">SELECT TASK CODE</option>
+						<?php foreach($tasktype as $cattegrt)
+						{ ?>
+						<option value="<?= $cattegrt['code']; ?>"><?= $cattegrt['code']; ?>-<?= $cattegrt['type']; ?></option>
+						<?php } ?>
+                    </select>
+                </div>
+            </div>
+			
+            <div class="emp-div samefor-div">
+			<!--ul class="dropdown-menu">
+				 <//?php 
+				 // foreach($empdataaa as $emp)   {
+				 
+								// $str = $emp['name'] ;
+
+							   // $emppp =(explode('[',$str));
+								
+								 // $newww1 =($emppp[0]);
+								 // $neww2= ($emppp[1]);
+								// ?>
+							 <li data-liv="<//?php echo $newww1;?>"><//?php echo $newww1;?><span style="color:red;">[<//?php echo $neww2;?></span></li>
+								 </?php
+							echo "<li style ='color:#red' data-liv ='". $newww1."'>".$newww1."<span style='color:red'>".$neww2."</span></li>";
+				 // }
+								// ?>
+				</ul-->
+	
+
+			
+			<?php  $username= $this->session->current->userdata('full_name') ?>
+			
+                <div class="form-group" style="padding-top: 30px;width:304px; float:left">
+				<?php if ($emname != '')  { ?>
+				
+				<input type="text" class="form-control" value="<?php echo $emname;?>" readonly >
+				<?php } else { ?>
+				
+			<?php $empd =$username.'<b>['.$selemplodepartment.']</b>'; ?>
+				
+				        <?php if ($this->user_actions->is_selfservice()) { ?>
+
+				
+				   <select name="mySelectorself" class ="mySelectorself" style="height: 35px;">
+				<option value="">SELECT DEPARTMENT</option>
+				 <option value="<?php echo $username;?>" selected="selected"><?echo $empd;?></option>
+						
+				
+                   <?php foreach($empdataaa as $emp)   {
+				 
+						$haystack = $str = $emp['name'] ;
+
+							   $emppp =(explode('[',$str));
+								
+								$newww1 =($emppp[0]);
+						 	$neww2  = ($emppp[1]);
+							
+					$needle  = $selemplodepartment ;
+								
+						$newwww	 = $newww1.'<b>[' .$neww2.'</b>';		
+
+
+
+								?>
+								
+
+           	<?php	if(strpos( $haystack, $needle ) !== false){  ?>
+			
+			<option value="<?=$newww1;?>"<?php if ($newwww==$empd){ ?> selected="selected"<?php } ?>  ><?= $newww1.'<b>[' .$needle.']</b>'; ?></option>
+			
+				   
+			<?php	}  ?> 
+				   
+				   
+					 <?//php if ($this->user_actions->is_selfservice()) { ?>	
+				
+               <?php } ?>
+           </select>
+			
+		<?php } else {?>
+				
+				<select name="mySelector4" class ="mySelector4" style="height: 35px;">
+				
+				
+						<option value="">Select Employee</option>
+				
+                   <?php foreach($empdataaa as $emp)   {
+				 
+								$str = $emp['name'] ;
+
+							   $emppp =(explode('[',$str));
+								
+								$newww1 =($emppp[0]);
+								$neww2  = ($emppp[1]);
+							$newww	 = $newww1.'<b>[' .$neww2.'</b>';
+								
+								?>
+								
+
+           		
+				   <option value="<?=$newww1;?>"><?php echo $newww; ?></option>
+					 <?//php if ($this->user_actions->is_selfservice()) { ?>	
+				
+               <?php } ?>
+           </select>
+			 	
+				   <?php } }?>	
+
+			</div>
+		
+			
+			<style>
+		option[value="$neww2"]
+{
+background-color:yellow;
+} 	
+			
+			
+			.ppppp p {
+    margin-top: 41px;
+}
+.col-xs-1 span {
+    margin-left: 20px;
+    margin-top: 34px;
+}
+		.col-lg-1.actionnn {
+    float: right;
+    margin-top: -28px;
+}	
+			.col-lg-1.action {
+    
+}	
+			</style>
+			
+			
+		  <div class="act-div actionnn" style="padding-top:30px;float:left; margin-left: 2px;">
+                <div class="btn-group pull-right" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Action
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="tasks/re_assign" id="reAssign" data-toggle="modal" data-target="#modal_window"><i class="fa fa-user"></i> Assign to</a></li>
+						<li><a href="tasks/assigncode" id="Assigncode" data-toggle="modal" data-target="#modal_windoww"><i class="fa fa-user "></i> Assign task code</a></li>
+                        <?php if (isset($employee)) { ?>
+                        <li><a target="_blank" href="tasks/print_employee_tasks/<?= $employee['employee_id'] ?>/<?=$type?>" id="printTaskList" ><i class="fa fa-file-pdf-o"></i> Print</a></li>
+                        <?php } ?>                        
+                                 <!--<li><a href="#" id="deleteAll"><i class="fa fa-trash-o"></i> Delete</a></li>-->
+				
+                    </ul>
+                </div>
+            </div>
+			<div class="action" style="float:left; margin-left: 6px;">
+                <div class="title-action">
+                    <a href="tasks/index/all" class="btn btn-primary" >
+                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                        <?= $this->lang->line('Reset') ?>
+                    </a>
+                </div>
+            </div>
+			
+			
+            <div class="action" style="float:left; margin-left: 6px;">
+                <div class="title-action">
+                    <a href="tasks/new_task" class="btn btn-primary" >
+                        <i class="fa fa-plus-circle"></i>
+                        <?= $this->lang->line('Add') ?>
+                    </a>
+                </div>
+            </div>	
+			<div class="ppppp" style="float:left; padding-top: 35px;">
+ 
+ 
+			<span style="margin-left:21px; vertical-align: top;">Regular Work</span><span style=""> <input type="checkbox" style=" width: 28px; height:30px; margin-left:9px;    margin-top: -4px;" value="1" id="checkbox1"  class="mySelectorr" ></span>
+		</div>
+			
+				 <div class="dddddddd">
+                <div class="title-action" style="padding-top:30px;">
+			<?php 	if (!$this->user_actions->is_selfservice()){?>
+                    <a href="employees" class="btn btn-primary" style="border:1px solid #f7c029; background:#f7c029;color:white;text-align:center;">
+                        <i class="fa fa-fa-circle"></i>
+                        <?= $this->lang->line('Back')?>
+                    </a>
+			<?php } else{?>
+			
+			<a href="dashboard" class="btn btn-primary" style="border:1px solid #f7c029; background:#f7c029;color:white;text-align:center;">
+                        <i class="fa fa-fa-circle"></i>
+                        <?= $this->lang->line('Back')?>
+                    </a>
+			
+			<?php }?>
+                </div>
+            </div>	
+	
+        </div>
+          
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="wrapper wrapper-content animated fadeInDown">
+                    <div class="ibox-content ibox_content">
+                        <div class="row">
+                            <div id="save_result"></div>
+					<div class="display_completed_checkbox1" style="margin-left: 189px; margin-top: 0px; 			margin-bottom: -13px;">
+				
+						<span style=""> <input type="checkbox" style=" width: 28px; height:30px; margin-left:9px; margin-top: -4px;" value="1" id="displayCompleted"  class="mySelectorr" onclick="get()"></span>
+				 
+						<span style="margin-left:1px; vertical-align: top;">Display Completed</span>
+					</div>
+					<div class="responsive">
+                            <table class="table table-striped table-bordered table-hover data_table" >
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">
+                                            <label>
+                                                <input type="checkbox" name="checkHead" class="i-checks checkHead" id="selectall"/>
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </th>
+										<th class="asss" width="4%"><?= $this->lang->line('T C') ?></th>
+                                        <th class="asss22" width="12%"><?= $this->lang->line('Task process') ?></th>
+                                        <th class="asss222"><?= $this->lang->line('Title') ?></th>
+										 <th><?= $this->lang->line('Department') ?></th>
+                                        <th><?= $this->lang->line('Category') ?></th>
+                                        <th width="4%"></th>
+                                        <th width="4%"></th>
+										
+                                        <!--th width="4%">status</th-->
+                                        <th class="mn_width"><?= $this->lang->line('Assigned to') ?></th>
+                                        <th class="mn_width1"><?= $this->lang->line('Start Date') ?></th>
+                                        <th class="mn_width2"><?= $this->lang->line('Due Date') ?></th>
+                                        <th class="mn_width3" width="7%"></th>
+                                          <th style="display:none;" width="7%"></th>
+										
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($tasks as $task) { 	
+									
+									// echo"<pre>";
+									
+									// print_r($task);
+									// echo"</pre>";
+									
+									
+									
+									
+										 if($task['process']<100)
+											{
+													$processclass= 'uncomplete';
+											}
+											else
+											{
+												$processclass= 'complete';
+											}
+										?>								
+									
+                                        <tr entity_id="<?= $task['task_id'] ?>" class="<?php echo $processclass;?>">
+										
+                                            <td class="text-center">
+                                                <label>
+                                                    <input type="checkbox" class="i-checks checkItem" name="checkHead[]" value="<?= $task['task_id'] ?>" />
+                                                    <span class="lbl"></span>
+                                                </label>
+                                            </td>
+											<td class="asss"><?= $task['tcode']?></td>
+											
+                                            <!--td>
+                                                <div  class="pop-container">
+                                                    <a class="btn btn-outline btn-info btn-xs" href="tasks/comment_task/<?= $task['task_id'] ?>" data-toggle="tooltip" data-placement="top" title="Communication">
+                                                        <i class="fa fa-commenting"></i>
+                                                    </a>
+                                                    <a class="btn btn-outline btn-primary btn-xs pop-btn" data-pop="#pop<?= $task['task_id'] ?>">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                    <div class="pop-dialog" id="pop<?= $task['task_id'] ?>"><?= $task['description'] ?></div>                                                
+                                                </div>
+                                            </td-->
+											
+                                            <td class="asss22">
+											
+                                                <!--<input type="text" class="knob" value="<?php echo $task['process']; ?>" data-thickness="0.2" data-width="40" data-height="40" data-fgColor="#00a65a" data-readonly="true">-->
+                                                <div class="progress" style="margin-bottom: 0;">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="<?php echo $task['process']; ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $task['process']; ?>%;">
+                                                        <?php echo $task['process']; ?>%
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="asss222">
+											<div style=" position:relative;">
+												<?php if($task['task_attention']=="updated"){?>
+										         <b><img src="http://wshrms.peza.com.ph/images/if_check.png "style="width:13px; height:13px"></b><?php }?>
+												<?php if($task['task_attention']=="required"){?>
+										      <b><img src="http://wshrms.peza.com.ph/images/if_question.png"style="width:13px; height:13px"></b><?php }?>
+												<?php 
+											 $cday = $settingss['days'];
+											
+											$newdate = date('Y-m-d');
+												
+											 $udate = date('Y-m-d', strtotime($task['updated_date']));
+											 $daysting = "+".$cday."  day";
+											 $enddate = date('Y-m-d',strtotime($daysting, strtotime($udate)));
+											
+											if( $newdate < $enddate && $udate >= $newdate || $enddate > $newdate ){ ?>
+											
+											<a  style="color:red;"class="pop-btn" href="tasks/comment_task/<?= $task['task_id'] ?>" data-pop="#pop<?= $task['task_id'] ?>">
+											<?= $task['task_title'] ?></a>
+											<?php }  else { ?>
+											
+											<a class="pop-btn" href="tasks/comment_task/<?= $task['task_id'] ?>" data-pop="#pop<?= $task['task_id'] ?>"><?= $task['task_title'] ?></a>
+												
+												<?php } ?>
+										   
+												<div class="pop-dialog" id="pop<?= $task['task_id'] ?>"> <?= $task['description'] ?></div>
+												</div>
+											</td>
+											
+											
+											 <td> <?= $task['related_department']?></td>
+                                            <td><?= $task['task_category_name']?></td>
+                                            <td class="text-center text-danger"><?= $task['additional']?></td>
+                                            <td class="text-center text-danger"><?= ($task['task_regular'] == 1) ? 'R' : '' ?></td>
+                                            
+											<td class="mn_width">
+											<?php 
+											// echo "<pre>";
+											//print_r($empname);
+											$result = isset($empname[$task['task_id']]) ? $empname[$task['task_id']] : null;
+											$result = array_filter($result);
+											$results = array_unique($result);
+											
+											
+													foreach($results as $resu){
+														echo $resu ;
+														echo "<br/>";
+													}
+											?></td>
+                                            <td class="mn_width1"><?= $task['start_date'] ?></td>
+                                            <td class="mn_width2"><?php echo ($task['due_date'] == '0000-00-00' || $task['due_date'] == null) ? '' : $task['due_date'] ?></td>
+                                            <td class="mn_width3">
+
+                                                <a class="btn btn-outline btn-success btn-xs" href="tasks/edit_task/<?= $task['task_id'] ?>" >
+												
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                                <a class="btn btn-outline btn-danger btn-xs" onclick="confirm('Delete task ?') && submit_form('#delete_task<?= $task['task_id'] ?>', '#save_result')" title="Delete">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </a>
+					                  <?php if (!$this->user_actions->is_selfservice()) { ?>
+
+												
+					                  <a href="tasks/mail_task?id=<?= $task['task_id'] ?>&emp=<?=$task['employee_id'] ?>&noti=<?=$task['notify'] ?>" style="border:1px solid #00b440; border-radius: 3px; padding: 0px 5px 2px;display: inline-block;">													
+								<img src="http://wshrms.peza.com.ph/images/email-icon.png " style="width:15px; height:10px; border-radius:2px;"></a>
+												 <?php }?>
+
+                                                <form action="tasks/delete_task" method="POST" id="delete_task<?= $task['task_id'] ?>">
+                                                    <input type="hidden" id="task_id" name="task_id" value="<?= $task['task_id'] ?>" class="task_id<?= $task['task_id'] ?>">
+                                                </form>
+												
+                                            </td>
+											
+											
+											<td style="display:none;"><?php echo $task['status']; ?></td>
+                                        </tr>
+                                  
+									
+								
+										
+									<?php  } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        </div>
+    </div>
+</div>
+<?php
+$this->load->view('layout/footer')?>
+
+
+<style>
+
+@media only screen and (max-width: 767px) {	
+
+.responsive td, .responsive th{font-size:8px;padding-left: 1px !important; padding-right: 1px !important;}
+.progress .progress-bar { width: 100% !important;    font-size: 8px;}
+.icheckbox_square-green, .iradio_square-green{ width:13px; height:13px;}
+.icheckbox_square-green, .iradio_square-green { background-size: 224px 14px;}
+.responsive .table .mn_width {  width: 71px !important; min-width: 100% !important;  max-width: 100% !important;    padding-right: 0px;}
+.responsive .table .mn_width1 {
+    min-width: 100% !important;
+    max-width: 100% !important;
+}
+.responsive .table .mn_width2 {
+    min-width: 100% !important;
+    max-width: 100% !important;
+}
+.responsive .table .mn_width3 {
+    min-width: 100% !important;
+    max-width: 100% !important;
+}
+.responsive .table .mn_width3 a {
+    padding: 2px;
+    font-size: 8px;
+}
+body .responsive .table .asss {
+    width: 50px !important;
+    max-width: 100% !important;
+}
+body .responsive .table .asss222 {
+    max-width: 100% !important;
+    min-width: 100% !important;
+    width: 50px !important;
+}
+.ibox_content {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.emp-div.samefor-div .form-group select.mySelector4 {
+    width: 100%;
+}
+.emp-div.samefor-div .form-group {
+    width: 100% !important;
+}
+.samefor-div{ width:100%;}
+.wrapper-content {float: left;}
+.emp-div { width: 100%;}
+.display_completed_checkbox1 {
+    margin-left: 0px !important;
+    margin-bottom: 10px !important;
+}
+.samefor-div select {
+    width: 100% !important;
+}
+div.dataTables_paginate {
+    float: left; margin-top: 6px;
+}
+.dddddddd {
+    float: left;
+    margin-left: 10px;
+}
+
+}
+
+
+
+@media only screen and (max-width: 480px) {	
+.responsive td, .responsive th{ font-size:5px;}
+
+}
+</style>
+
+

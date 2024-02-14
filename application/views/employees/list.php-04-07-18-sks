@@ -1,0 +1,493 @@
+<!--div class="row">
+	<div class="col-sm-6">
+		<div class="dataTables_length" id="table_length">
+			<label style="width:100%;">
+				<select name="table_length" aria-controls="table" class="form-control input-sm" style="float:left;width:25%;">
+					<option value="12">12</option>
+					<option value="24">24</option>
+					<option value="48">48</option>
+					<option value="96">96</option>
+				</select> <span style="float:left;margin-left:10px">records per page</span>
+			</label>
+		</div>
+	</div>
+</div-->
+<?php  
+// echo '<pre>';
+
+// print_r($employee_memo);
+// echo '</pre>';
+// die('dcdf');
+//foreach($claims as $claim){
+ // echo '<pre>';
+		 // print_r($claim);
+		  
+		 // echo '</pre>';
+		// echo  $claim['location'];
+		//die('xzfg');
+		
+		
+		//foreach($claim['attachments'] as $cl){
+			
+			// echo '<pre>';
+		 // print_r($cl['location']);
+		  
+		//  echo '</pre>';
+		//echo  $claim['location'];
+//die('xzfg');
+			
+			
+	//}
+//}
+
+ // $claim['file'];
+  // $claim['object'];
+  // echo '<pre>';
+		   // print_r($claims);
+		  
+		   // echo '</pre>';
+		    // echo  $claims['employee_id'];
+		 // die('xvdv');
+
+ ?>
+
+<script>
+$('document').ready(function () {
+$('#mySelectorr').change( function(e) { 
+		var letter = $(this).val();
+	window.location.href="<?php echo base_url();?>employees/inactive?xy="+letter;
+	//	alert(letter);
+	});
+	
+	
+	
+	
+	// $(".gbp").click(function(){
+
+	// $('#fall').removeClass('current');
+	 // $('.gbp').addClass('current');
+	  
+ // });
+ $('#mySelector1').change( function(e) { 
+		var letterrr = $(this).val();
+		window.location.href="<?php echo base_url();?>tasks/index/all/"+letterrr;
+	});
+ 
+ 
+ 
+ 
+ 
+ 
+	});
+	
+	
+	
+	
+	
+	</script>
+<?php 
+//$i = 0;
+foreach ($employees['data'] as $employeee) { 
+          
+		  // echo '<pre>';
+		  // print_r($claims);
+		  // echo '</pre>';
+		  // die('xvdv');
+		  
+		  
+		  
+   // $i++;
+} 
+  // echo '<pre>';
+		  // print_r($employee_memo);
+		  // echo '</pre>';
+		  // die('xvdv');
+		  
+ $idss= $_GET['xy'];
+ $gidss= $_GET['page'];
+ // die('dcdcdcd');
+
+?>
+	 <!--   <?php if ($employeee['is_active'] != 1) { ?>
+<div class="form-group has-feedback m-t-sm">
+									<select name="employee_memo" id="mySelectorr" style="margin-left: 16px; width: 180px; height: 40px;padding: 5px;">
+									<option value="">Select</option>
+										<option value="">All</option>
+															<?php foreach($employee_memor as $enum_value){   //enum_values/$employee_memo
+														// echo '<pre>';
+		  // print_r($id);
+		  // echo '</pre>';
+		  // die('xvdv');	
+													if($enum_value['status']!='Active')
+													{														
+															?>
+									 
+									<option value="<?php echo $enum_value['status']; ?>"<?php if($idss ==$enum_value['status']) echo 'selected="selected"'; ?>><?php echo $enum_value['status']; ?></option>
+														
+									<?php }
+															}?>
+																		</select>
+							      </div>
+								  
+ <?php } ?>  -->
+<?php 
+$i = 0;
+foreach ($employees['data'] as $employee) { 
+    
+	
+    
+    $i++;
+	// echo $i += $employee['employee_id'];
+	
+		  // echo '<pre>';
+		  // print_r($employee);
+		  // echo '</pre>';
+		// die('dcfdc');
+		
+	// echo 	$claim['file'];
+  // echo $claim['object'];
+  // die('fvf');
+    ?>
+	
+	<style>
+	.onhover:hover > .show_text {
+    display: block;
+}
+
+.contact-box {min-height: 212px;}
+
+
+
+
+.show_text {
+    position: absolute;
+    top: -21px;
+    color: #fff;
+    left: 0px;
+    display: none;
+    background: #000;
+    padding: 4px 12px;
+    border-radius: 11px;
+}
+.orange-circlee:hover > .orangehover
+{
+display:block;	
+}
+.orangehover
+{
+position: absolute;
+    top: -21px;
+    color: #fff;
+    left: 0px;
+    display: none;
+    background: #000;
+    padding: 4px 12px;
+    border-radius: 11px;	
+}
+.fgfgfggfg {
+    right: 21px;
+    width: auto;
+    left: auto;
+}
+.rrddrd {
+    width: 198px;
+    left: 0px;
+    top: 76px;
+    z-index: 999;
+}
+.rrddrdd {
+        width: 150px;
+    left: 21px;
+    top: -24px;
+    z-index: 999;
+	font-weight:bold;
+}
+
+
+
+
+
+	</style>
+	
+	<?php   /* echo "<pre>";
+				 print_r($taskscount);
+				 echo "</pre>";  */ 
+				?>
+	
+
+    <div class="col-lg-4 person_area">
+        <div class="contact-box">
+            <a href="employees/edit_employee/<?= $employee['employee_id'] ?>">
+                <div class="col-sm-3">
+                    <div class="text-center">
+                        <img class="img" style="width: 80%;" src="<?= $employee['avatar'] ?>">
+                        <?php if ($employee['is_active'] == 1) { ?>
+                            <span class="badge badge-success m-t-xs"><?= $this->lang->line('Active') ?></span>
+							
+							<?php if($employee['petteycashliquidate']==1){
+					?> 
+					<span class="onhover dtdtdtd" style="height:10px;width:10px;border-radius:50%; background:red;display:inline-block;"><span class="show_text rrddrd">This employee is remarked</span></span>
+					<?php
+					};?>
+                        <?php } else { ?>
+                            <span class="badge badge-default m-t-xs"><?= $this->lang->line('Inactive') ?></span>
+                        <?php } ?>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+				<div class="row">
+				<div class="">
+			
+				<h3><?php if(!empty($employee['punchclock'])){
+					foreach($employee['punchclock'] as $empclck)
+					{
+						if($empclck['end_time']!="")
+						{
+							?> 
+					<span class="onhover fghgfhrr" style="height:10px;width:10px;border-radius:50%; background:#2c34d7;display:inline-block;"><span class="show_text gggggggf">Employee Timed Out</span></span>
+					
+					<?php
+						}
+						else {
+					?> 
+					<span class="orange-circlee" style="height:10px;width:10px;border-radius:50%; background:#ff7e00;display:inline-block;">
+					<span class="orangehover">Time In Already</span>
+					</span>
+					
+					<?php
+						}
+					}
+					};?>
+					<b class="onhover onhover2" style="color:red;"><?php if($employee['late_Time']!=""){ echo $employee['late_Time'];};?><span class="show_text show_text1">Penalty Time</span></b>  <strong><?= $employee['name'] ?></strong>	
+					<span style=" color: red; margin-left: 10px;"> - <?= $employee['employee_no'] ?></span></h3>
+			
+				<span class="hgcgv" ><?= $employee['status'] ?></span>
+				
+				[<?= $employee['department_name'] ?>] <?= $employee['position_name'] ?>
+				</div>
+				<span > <?= $employee['employee_status_note']   ?></span> 
+				
+				 <div class="row">
+                <div class="title-action" style="padding-top:0px;">
+				<span class="onhover dtdtdtd" style="position: absolute; margin-top: -11px; margin-left: -9px;"> 
+				<?php $i=1;$t=0;
+				//echo sizeof($task);
+				foreach($taskscount as $task){
+					if($task['employee_id']==$employee['employee_id']){
+						 $t=$t+$i;
+						 //echo'';
+					}
+					
+				}$i++;
+				if($t !='0'){
+				echo '<span class="task_total" style="background: #838383;border-radius: 50%;padding: 2px 5px;color: #fff; font-weight:700;">'.$t.'</span>';}
+				?><span class="show_text rrddrdd">Total Pending Task</span>
+				</span> 
+                    <a href="<?php echo base_url();?>tasks/index/all/?xy=<?php echo $employee['name'];?>
+					&&de=<?php echo $employee['department_name'] ?>" id="classss" class="btn btn-primary" style="color:white;width:64px;height:29px;text-align:center;">
+                        <i class="fa fa-fa-circle"></i>
+                        <?= $this->lang->line('Task')?>
+                    </a>
+          
+				   
+                    <a href="<?php echo base_url();?>reports/orclock/?xy=<?php echo $employee['name'];?>&&id=<?php echo $employee['employee_id']; ?>
+					&&de=<?php echo $employee['department_name']; ?> " id="classss" class="btn btn-primary" style="color:white;width:64px;height:29px;text-align:center;">
+                        <i class="fa fa-fa-circle"></i>
+                        <?= $this->lang->line('Detail')?>
+                    </a>
+           
+            </div>
+			</div>
+			
+			
+				
+				
+				
+				
+				
+				<br><br>
+				
+				<?php if ($employeee['is_active'] != 1) { ?>
+				
+				<?php   foreach($claims as $claim){  
+				//$claim['file'];
+				 ?>
+				 <?php   foreach($claim['attachments'] as $cl){
+							 ?>
+				
+				<?php if($claim['employee_id'] == $employee['employee_id'] ){ ?>
+				<span ><a style="border: 1px solid; color: #ef1f0f !important;font-weight: bold; padding: 5px;" target="_blank" href="<?php echo base_url('files')?>/attachments/<?php echo $cl['location']; ?>" >Quit Claim</a></span>
+				
+				
+				
+				
+				<?php  
+				}
+				}
+				}
+				}
+				?>
+				
+				<!-- <div class="col-md-4 col-sm-4"> -->
+				<!--<//?php if ($employee['is_active'] != 1) { ?>-->
+				
+					<!--<span style="z-index:9999;"><div class="form-group has-feedback m-t-sm">
+								<select name="employee_memo" id="employee_memo" >
+								
+								<?php// foreach($enum_values as $enum_value){
+									//if($enum_value !== Active){
+									?>
+								
+								<option value="<?php// echo $enum_value; ?>"<?php// if($employee_memo['status']==$enum_value) echo 'selected="selected"'; ?>><?php// echo $enum_value; ?></option>
+													
+									<?php //}
+								//	}?>
+								</select>
+							
+                            						
+                        </div></span>  -->
+						
+				<!--<//?php }// print_r($employee); ?>-->
+				<!-- </div> -->
+			<!-- 	<div class="col-md-12 col-sm-12">
+				 <span>[<?= $employee['department_name'] ?>] <?= $employee['position_name'] ?></span>
+				 
+				</div> -->
+				</div>
+				<br/>
+				
+				<!-- <div class="row"> -->
+				<!--<//?php if ($employee['is_active'] != 1) { ?>
+				<div class="col-sm-12 col-md-12 "><span><b> <?= $this->lang->line('Employee Status Note') ?> </b></span><br/><br/>
+				<?php// print_r($employee) ;  ?>
+				<span class="aaaa" style="padding:7px; display:block; border:1px solid #000;"> <?= $employee['employee_status_note']   ?></span>
+				</div>
+				<//?php } ?>
+				</div>-->
+                    
+					
+                   
+					
+                </div>
+                <?php
+                $diff = strtotime($employee['contract_expiry']) - strtotime(date('Y-m-d'));
+                $days = 0;
+                if ($diff > 0) {
+                    $days = floor($diff / 86400);
+                }
+                ?>
+                <label class="control-label text-danger onhover fghgfh" style="font-size: 17px"><?= $days ?>
+				<span class="show_text fgfgfggfg">Remaining days of contract</span>
+				</label>
+				
+                <div class="clearfix"></div>
+            </a>
+        </div>
+    </div>
+    <?php
+    if($i % 3 == 0) {
+        echo '<div class="clearfix"></div>';
+    }
+}?>
+	<div id="row">
+		<div class="col-sm-12" style="float:right;">
+		<?php
+		$gidssg= $_GET['page'];
+			$ctp=$page_id;
+			$d=$enumber;
+			$t=	$enumber/30 + 1;
+			$tt =(int)$t+1;
+			$prspg=$ctp-1;
+				$nextpg=$ctp+1;
+				$ii=1;
+				
+		?>
+			<div class="dataTables_paginate paging_simple_numbers" id="table_paginate">
+				<ul class="pagination">
+				
+				<?php if($inactive == 1){ ?>
+						
+					<li class="paginate_button previous <?php if($ctp==1){?> disabled <?php } ?>" aria-controls="table" tabindex="0" id="table_previous">
+					
+					<a href="employees/inactive/<?=$prspg;?>">Previous</a></li>
+					
+					<li class="paginate_button active" aria-controls="table" tabindex="0">
+					<?php  
+					  
+					//echo '<a href="index.php?page='.$i.'&rpp=20">['.$i.']</a>';
+					for ($ii; $ii<$t; $ii++){
+						
+						if($ctp==$ii)
+    {
+        $c="activegb";
+    }
+    else
+    {
+        $c="";
+    }
+           echo " <a class='$c' href='employees/inactive/".$ii."'>".$ii."</a>" ;
+					}
+					
+					?></li>
+					
+					<li class="paginate_button next<?php if($ctp==$tt){?> disabled <?php } ?>" aria-controls="table" tabindex="0" id="table_next"><a href="employees/inactive/<?=$nextpg;?>">Next</a></li>	
+				
+				
+					
+			<?php	}else{ ?>
+					
+				
+					<li class="paginate_button previous <?php if($ctp==1){?> disabled <?php } ?>" aria-controls="table" tabindex="0" id="table_previous"><a href="employees/index/<?=$prspg;?>">Previous</a></li>
+					
+					<li class="paginate_button active" aria-controls="table" tabindex="0">
+					<?php  
+					//echo '<a href="index.php?page='.$i.'&rpp=20">['.$i.']</a>';
+					for ($ii; $ii<$t; $ii++){
+						
+						if($ctp==$ii)
+    {
+        $cd="activegb";
+    }
+    else
+    {
+        $cd="";
+    }
+           echo " <a class='$cd' href='employees/index/".$ii."'>".$ii."</a>" ;
+					}
+					
+					?>
+					</li>
+				
+					
+					<li class="paginate_button next<?php if($ctp==$tt){?> disabled <?php } ?>" aria-controls="table" tabindex="0" id="table_next"><a href="employees/index/<?=$nextpg;?>">Next</a></li>
+					
+	
+					
+			<?php	}?>
+				
+				
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+<style>
+ .activegb{
+    background-color: #c7b8b8 !important;
+}
+span.aaaa {
+    min-height: 56px;
+    border: 1px solid #bbb !important;
+}
+span.hgcgv {
+    border: none !important;
+    font-weight: bold;
+    color: #428bca;
+    font-size: 15px;
+}
+</style>
+<script>
+ $('document').ready(function(){
+	 
+ });
+</script>

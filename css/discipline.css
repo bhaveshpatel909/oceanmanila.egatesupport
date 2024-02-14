@@ -1,0 +1,19 @@
+/* FONT */
+
+@import url("//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;lang=en");
+/* GLOBAL */
+
+.wrapword{white-space: -moz-pre-wrap !important;white-space: -pre-wrap;white-space: -o-pre-wrap;white-space: pre-wrap;word-wrap: break-word;word-break: break-all;white-space: normal;}
+    
+ body {
+     font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+     background-color: #fff;
+     font-size: 13px;
+     color: #333;
+}
+
+.pull-left {float: left;}
+.pull-right {float: right;}
+.clearfix {clear: both;}
+.title {text-align: center;}
+
